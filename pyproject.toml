@@ -1,0 +1,27 @@
+[project]
+authors = [{name = "pabl-o-ce", email = "cye@poscye.com"}]
+name = "model-card-gen-hf"
+version = "0.0.1"
+description = "Hugging Face: model card generator"
+license = {file = "LICENSE.txt"}
+readme = "README.md"
+requires-python = ">=3.9"
+dependencies = [
+    "Jinja2 ==3.1.4",
+]
+
+[project.scripts]
+start-bot = "main:main"
+
+[project.optional-dependencies]
+dev = [
+    "pylint == 3.1.0"
+]
+
+[build-system]
+requires = [
+    "packaging",
+    "setuptools",
+    "wheel",
+]
+build-backend = "setuptools.build_meta"

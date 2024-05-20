@@ -1,0 +1,115 @@
+---
+tags:
+{% for tag in model_tags %}
+- {{ tag }}
+{% endfor %}
+base_model:
+{% for base in model_base %}
+- {{ base }}
+{% endfor %}
+library_name: transformers
+license: {{ model_licence }}
+{% if model_licence_name %}
+license_name: {{ model_licence_name }}
+{% endif %}
+{% if model_licence_link %}
+license_link: {{ model_licence_link }}
+{% endif %}
+language:
+{% for lang in languages %}
+- {{ lang }}
+{% endfor %}
+datasets:
+{% for dataset in datasets %}
+- {{ dataset }}
+{% endfor %}
+thumbnail: {{ model_image }}
+---
+
+# {{ model_name }}
+
+[![Discord](https://img.shields.io/discord/1156064224225808488?logo=Discord&logoColor=%23ffffff&label=Discord&link=https%3A%2F%2Fdiscord.gg%2FtCMkMDDHwm)](https://discord.gg/cognitivecomputations)
+
+<img src="{{model_image}}" width="400" />
+
+{{ model_description }}
+
+**Sponsors:**
+{{ sponsor_info }}
+
+## Usage
+```python
+!pip install -qU transformers accelerate
+
+from transformers import AutoTokenizer
+import transformers
+import torch
+
+model = "{{model_repo}}"
+messages = [{"role": "user", "content": "What is a large language model?"}]
+
+tokenizer = AutoTokenizer.from_pretrained(model)
+prompt = tokenizer.apply_chat_template(messages, tokenize=False, add_generation_prompt=True)
+pipeline = transformers.pipeline(
+    "text-generation",
+    model=model,
+    torch_dtype=torch.float16,
+    device_map="auto",
+)
+
+outputs = pipeline(prompt, max_new_tokens=256, do_sample=True, temperature=0.7, top_k=50, top_p=0.95)
+print(outputs[0]["generated_text"])
+```
+### Chat template
+#### {{ chat_template_name }}
+```
+{{ chat_template_format }}
+```
+- **Intended Use:** {{ intended_use }}
+- **Limitations:** {{ limitations }}
+- **Ethical Considerations:** {{ ethical_considerations }}
+
+### Quantized
+{% if model_author_gguf  %}
+#### GGUF {{ model_author_gguf }}
+- {{ model_link_gguf }}
+{% endif %}
+{% if model_author_exl2  %}
+#### ExLlamaV2 {{ model_author_exl2 }}
+- {{ model_link_exl2 }}
+{% endif %}
+{% if model_author_exl2  %}
+#### AWQ {{ model_author_awq }}
+- {{ model_link_awq }}
+{% endif %}
+{% if model_author_mlx  %}
+#### MLX {{ model_author_mlx }}
+- {{ model_link_mlx }}
+{% endif %}
+
+## Evals
+
+{{evals_img}}
+
+### Open LLM Leaderboard Evaluation Results
+Detailed results can be found [here]({{open_llm_link}})
+{{ open_llm_eval }}
+
+## Training
+
+{{ framework_badge }}
+<details><summary>See axolotl config</summary>
+axolotl version: `{{ axolotl_version }}`
+```yaml
+{{ axolotl_config }}
+```
+</details><br>
+
+### Training procedure
+#### Training hyperparameters
+The following hyperparameters were used during training:
+{{ model_training_hyperparameters }}
+#### Training results
+{{ model_training_result }}
+#### Framework versions
+{{ model_training_framework_version }}
